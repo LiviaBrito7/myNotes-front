@@ -123,9 +123,7 @@ export default {
       }
 
       try {
-        const response = await apiClient.createUser(userData)
-        sessionStorage.setItem('token', response.data.token)
-        localStorage.setItem('userData', JSON.stringify(response.data.user))
+        await apiClient.createUser(userData)
         this.successMessage = 'Usuário cadastrado com sucesso!'
       } catch (error) {
         this.errorMessage = 'Erro ao cadastrar o usuário. Tente novamente.'
