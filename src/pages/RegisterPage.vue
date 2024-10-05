@@ -3,7 +3,7 @@
     <div class="register-page q-gutter-md">
       <h1 class="text-h5">Cadastro de Usuário</h1>
 
-      <q-form @submit.prevent="handleRegister" @reset="resetForm" class="q-gutter-md">
+      <q-form @submit.prevent="handleRegister" class="q-gutter-md">
         <q-input
           v-model="account.name"
           label="Nome"
@@ -82,15 +82,7 @@ export default {
     }
   },
   methods: {
-    clearValidationErrors () {
-      for (const key in this.validationErrors) {
-        this.validationErrors[key] = []
-      }
-    },
-
     validateFields () {
-      this.clearValidationErrors()
-
       if (!this.account.name) {
         this.validationErrors.name.push('O campo nome é obrigatório.')
       } else if (this.account.name.length > 50) {
@@ -133,22 +125,12 @@ export default {
       try {
         await apiClient.createUser(userData)
         this.successMessage = 'Usuário cadastrado com sucesso!'
-        this.resetForm()
       } catch (error) {
         this.errorMessage = 'Erro ao cadastrar o usuário. Tente novamente.'
         console.error('Erro ao cadastrar:', error)
       } finally {
         this.loading = false
       }
-    },
-
-    resetForm () {
-      this.account.name = ''
-      this.account.email = ''
-      this.account.password = ''
-      this.successMessage = ''
-      this.errorMessage = ''
-      this.clearValidationErrors()
     }
   }
 }
