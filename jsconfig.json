@@ -29,8 +29,12 @@
     }
   },
   "include": [
-    "src/**/*" 
-  ],
+  "src/components/**/*",
+  "src/pages/**/*",
+  "src/layouts/**/*",
+  "src/boot/**/*",
+  "src/stores/**/*"
+],
   "exclude": [
     "dist",
     ".quasar",
