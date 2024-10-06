@@ -1,5 +1,9 @@
 <template>
   <q-page class="q-pa-md">
+    <div class="mynoteslogo">
+      <img class="logo" src="../images/logo.svg" alt="logo mynotes">
+      <h2>MyNotes</h2>
+    </div>
     <div class="register-page q-gutter-md">
       <h1 class="text-h5">Bem-vindo à MyNotes</h1>
       <h2 class="text-h5">Já tem uma conta?</h2>
@@ -60,11 +64,11 @@
         </div>
       </q-form>
 
-      <q-banner v-if="successMessage" class="bg-positive text-white">
+      <q-banner v-if="successMessage" class="msg text-positive">
         {{ successMessage }}
       </q-banner>
 
-      <q-banner v-if="errorMessage" class="bg-negative text-white">
+      <q-banner v-if="errorMessage" class="msg text-negative">
         {{ errorMessage }}
       </q-banner>
     </div>
@@ -149,16 +153,20 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');*{
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+*{
   background-color: #E5E5E5;
+}
+.q-page {
+  height: 100vh;
+  overflow: hidden;
 }
 .register-page {
   max-width: 500px;
   margin: auto;
-  padding: 20px;
+  padding: 10px;
   border-radius: 8px;
   font-family: 'DM Sans';
-  display: flex;
   flex-direction: column;
   justify-content: center;
   height: 100vh;
@@ -168,6 +176,7 @@ export default {
 h1 {
   text-align: center;
   margin-bottom: 0px;
+  font-weight: 700;
 }
 
 h2 {
@@ -191,6 +200,7 @@ h2 {
 
 .q-btn {
   width: 100%;
+  height: 50px;
   margin-top: 10px;
   border-radius: 50px;
 }
@@ -201,15 +211,35 @@ h2 {
   padding: 10px;
 }
 
-.text-negative {
-  font-size: 0.9em;
-}
-
 .text-h5 {
   color: #333;
 }
 
 .register-page .text-white {
   color: #fff;
+}
+
+.mynoteslogo {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-size: 1.4em;
+  opacity: 0.3;
+  font-family: 'DM Sans';
+}
+
+.logo {
+  width: 30px;
+  height: auto;
+  margin-right: 7px;
+  display: flex;
+  justify-content: center;
+}
+
+.msg{
+  margin-top: 0px;
+  padding: 0px;
+  text-align: center;
+  justify-content: center;
 }
 </style>
