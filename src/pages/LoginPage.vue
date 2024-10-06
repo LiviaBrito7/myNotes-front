@@ -4,9 +4,9 @@
       <img class="logo" src="../images/logo.svg" alt="logo mynotes">
       <h2>MyNotes</h2>
     </div>
-    <div class="register-page q-gutter-md">
+    <div class="login-page q-gutter-md">
       <h1 class="text-h5">Faça login em sua conta!</h1>
-      <h2 class="text-h5">Ainda não tem uma conta?</h2>
+      <h2 class="text-h5">Ainda não tem uma conta? <RouterLink to="/register" class="link">Registre-se</RouterLink></h2>
 
       <q-form @submit.prevent="handleLogin" class="q-gutter-md">
         <div>
@@ -38,7 +38,7 @@
         </div>
 
         <div>
-          <q-btn type="submit" label="Cadastrar" color="primary" :loading="loading" />
+          <q-btn type="submit" label="Entrar" color="primary" :loading="loading" />
         </div>
       </q-form>
 
@@ -105,7 +105,7 @@ export default {
   height: 100vh;
   overflow: hidden;
 }
-.register-page {
+.login-page {
   max-width: 500px;
   margin: auto;
   padding: 10px;
@@ -159,7 +159,7 @@ h2 {
   color: #333;
 }
 
-.register-page .text-white {
+.login-page .text-white {
   color: #fff;
 }
 
@@ -185,5 +185,9 @@ h2 {
   padding: 0px;
   text-align: center;
   justify-content: center;
+}
+.link{
+  color: #007bff;
+  text-decoration: none;
 }
 </style>

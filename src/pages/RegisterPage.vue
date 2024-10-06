@@ -6,7 +6,7 @@
     </div>
     <div class="register-page q-gutter-md">
       <h1 class="text-h5">Bem-vindo à MyNotes</h1>
-      <h2 class="text-h5">Já tem uma conta?</h2>
+      <h2 class="text-h5">Já tem uma conta? <RouterLink to="/login" class="link">Logue-se</RouterLink></h2>
 
       <q-form @submit.prevent="handleRegister" class="q-gutter-md">
         <div>
@@ -241,5 +241,9 @@ h2 {
   padding: 0px;
   text-align: center;
   justify-content: center;
+}
+.link{
+  color: #007bff;
+  text-decoration: none;
 }
 </style>
