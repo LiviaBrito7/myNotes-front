@@ -1,50 +1,62 @@
 <template>
   <q-page class="q-pa-md">
     <div class="register-page q-gutter-md">
-      <h1 class="text-h5">Cadastro de Usuário</h1>
+      <h1 class="text-h5">Bem-vindo à MyNotes</h1>
+      <h2 class="text-h5">Já tem uma conta?</h2>
 
       <q-form @submit.prevent="handleRegister" class="q-gutter-md">
-        <q-input
-          v-model="account.name"
-          label="Nome"
-          outlined
-          clearable
-          required
-          :disable="loading"
-        />
-        <div v-for="error in validationErrors.name" :key="error" class="text-negative">
-          {{ error }}
+        <div>
+          <h3 class="input-title">Nome</h3>
+          <q-input
+            v-model="account.name"
+            placeholder="Insira seu nome"
+            outlined
+            rounded
+            clearable
+            required
+            :disable="loading"
+          />
+          <div v-for="error in validationErrors.name" :key="error" class="text-negative">
+            {{ error }}
+          </div>
         </div>
 
-        <q-input
-          v-model="account.email"
-          label="Email"
-          type="email"
-          outlined
-          clearable
-          required
-          :disable="loading"
-        />
-        <div v-for="error in validationErrors.email" :key="error" class="text-negative">
-          {{ error }}
+        <div>
+          <h3 class="input-title">Email</h3>
+          <q-input
+            v-model="account.email"
+            type="email"
+            placeholder="Insira seu email"
+            outlined
+            rounded
+            clearable
+            required
+            :disable="loading"
+          />
+          <div v-for="error in validationErrors.email" :key="error" class="text-negative">
+            {{ error }}
+          </div>
         </div>
 
-        <q-input
-          v-model="account.password"
-          label="Senha"
-          type="password"
-          outlined
-          clearable
-          required
-          :disable="loading"
-        />
-        <div v-for="error in validationErrors.password" :key="error" class="text-negative">
-          {{ error }}
+        <div>
+          <h3 class="input-title">Senha</h3>
+          <q-input
+            v-model="account.password"
+            type="password"
+            placeholder="Insira sua senha"
+            outlined
+            rounded
+            clearable
+            required
+            :disable="loading"
+          />
+          <div v-for="error in validationErrors.password" :key="error" class="text-negative">
+            {{ error }}
+          </div>
         </div>
 
         <div>
           <q-btn type="submit" label="Cadastrar" color="primary" :loading="loading" />
-          <q-btn type="reset" label="Limpar" color="secondary" flat />
         </div>
       </q-form>
 
@@ -137,8 +149,67 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');*{
+  background-color: #E5E5E5;
+}
 .register-page {
   max-width: 500px;
-  margin: 0 auto;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+  font-family: 'DM Sans';
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 0px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  margin-top: 10x;
+}
+
+.input-title {
+  font-size: 1em;
+  margin-bottom: 2px;
+  color: #333;
+}
+
+.q-input {
+  margin-bottom: 15px;
+  background-color: #ffffff;
+  border-radius: 50px;
+}
+
+.q-btn {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 50px;
+}
+
+.q-banner {
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.text-negative {
+  font-size: 0.9em;
+}
+
+.text-h5 {
+  color: #333;
+}
+
+.register-page .text-white {
+  color: #fff;
 }
 </style>
