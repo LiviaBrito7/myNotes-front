@@ -82,6 +82,10 @@ export default {
       try {
         const response = await apiClient.loginUser(credentials)
         const token = response.data.token
+        const user = response.data
+        localStorage.setItem('user', JSON.stringify(user))
+        sessionStorage.setItem('user', JSON.stringify(user))
+        this.$router.push('/home')
         localStorage.setItem('token', token)
         sessionStorage.setItem('token', token)
         this.successMessage = 'Usuário logado com sucesso!'
