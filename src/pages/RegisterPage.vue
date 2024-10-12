@@ -120,7 +120,7 @@ export default {
       }
     },
 
-    async handleRegister() {
+    async handleRegister () {
       this.loading = true
       this.successMessage = ''
       this.errorMessage = ''
@@ -144,7 +144,7 @@ export default {
         const { id, name, email } = response.data
         localStorage.setItem('user', JSON.stringify({ id, name, email }))
         sessionStorage.setItem('user', JSON.stringify({ id, name, email }))
-        this.$router.push('/')
+        this.$router.push('/home')
       } catch (error) {
         this.errorMessage = 'Erro ao cadastrar o usuário. Tente novamente.'
         console.error('Erro ao cadastrar:', error)
