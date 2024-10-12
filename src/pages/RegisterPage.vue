@@ -139,12 +139,9 @@ export default {
       }
 
       try {
-        const response = await apiClient.createUser(userData)
+        await apiClient.createUser(userData)
         this.successMessage = 'Usuário cadastrado com sucesso!'
-        const { id, name, email } = response.data
-        localStorage.setItem('user', JSON.stringify({ id, name, email }))
-        sessionStorage.setItem('user', JSON.stringify({ id, name, email }))
-        this.$router.push('/home')
+        this.$router.push('/login')
       } catch (error) {
         this.errorMessage = 'Erro ao cadastrar o usuário. Tente novamente.'
         console.error('Erro ao cadastrar:', error)
