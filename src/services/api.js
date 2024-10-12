@@ -69,8 +69,8 @@ export default {
     return apiClient.get(`/notes/${id}`)
   },
 
-  updateNoteById (id) {
-    return apiClient.put(`/notes/${id}`)
+  updateNoteById (id, noteData) {
+    return apiClient.put(`/notes/${id}`, noteData)
   },
 
   deleteNoteById (id) {
