@@ -1,0 +1,194 @@
+<template>
+  <div class="row q-gutter-md">
+    <div v-if="notes.length === 0" class="col-12 not-found">
+      <p>Você ainda não adicionou nenhuma nota.</p>
+    </div>
+    <div v-for="note in notes" :key="note.id" class="col-3 col-sm-6 col-md-4 col-lg-3">
+      <q-card
+        flat
+        bordered
+        class="my-card"
+        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+      >
+        <q-card-section class="bg-primary">
+          <div class="row items-center no-wrap">
+            <div class="col">
+              <div class="text-h6 title">{{ note.title }}</div>
+            </div>
+            <q-separator dark />
+            <div class="col-auto">
+              <q-btn color="white" round flat icon="more_vert">
+                <q-menu cover auto-close>
+                  <q-list>
+                    <q-item clickable @click="handleDeleteNote(note.id)">
+                      <q-item-section>Deletar</q-item-section>
+                    </q-item>
+                    <q-item clickable @click="openEditDialog(note)">
+                      <q-item-section>Editar</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <p class="content">{{ note.content }}</p>
+        </q-card-section>
+      </q-card>
+    </div>
+    <div class="col-12">
+      <CreateNoteComponent @noteCreated="fetchNotes" />
+      <q-dialog v-model="openEditDialogFlag" class="dialog-margin" :max-width="600"> <!-- Adicionando classe de margem -->
+        <q-card class="custom-card">
+          <q-card-section class="dialog-header bg-primary text-white">
+            <div class="text-h6">Editar Nota</div>
+          </q-card-section>
+
+          <q-card-section class="q-pa-md dialog-content">
+            <div class="column">
+              <q-input v-model="editTitle" label="Título" filled class="input-title" />
+              <q-input v-model="editContent" filled type="textarea" label="Conteúdo" class="input-content" />
+            </div>
+          </q-card-section>
+
+          <q-banner v-if="successMessage" class="msg text-positive">
+            {{ successMessage }}
+          </q-banner>
+
+          <q-banner v-if="errorMessage" class="msg text-negative">
+            {{ errorMessage }}
+          </q-banner>
+
+          <q-card-actions>
+            <q-btn flat label="Fechar" @click="closeEditDialog" />
+            <q-btn color="primary" label="Salvar" @click="handleUpdateNote" />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+  </div>
+</template>
+
+<script>
+import apiClient from 'src/services/api.js'
+import CreateNoteComponent from 'src/components/CreateNoteComponent.vue'
+
+export default {
+  name: 'HomePage',
+  components: {
+    CreateNoteComponent
+  },
+  data () {
+    return {
+      notes: [],
+      openEditDialogFlag: false,
+      selectedNoteId: null,
+      editTitle: '',
+      editContent: '',
+      successMessage: '',
+      errorMessage: ''
+    }
+  },
+  methods: {
+    async fetchNotes () {
+      try {
+        const user = JSON.parse(sessionStorage.getItem('user'))
+        if (user) {
+          const response = await apiClient.getAllNotes('/notes')
+          this.notes = response.data
+            .filter(note => Number(note.userId) === Number(user.user.id))
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        } else {
+          this.notes = []
+        }
+      } catch (error) {
+        console.error('Erro ao buscar notas', error)
+      }
+    },
+    async handleDeleteNote (noteId) {
+      try {
+        await apiClient.deleteNoteById(noteId)
+        this.fetchNotes()
+      } catch (error) {
+        console.error('Erro ao deletar a nota', error)
+      }
+    },
+    openEditDialog (note) {
+      this.selectedNoteId = note.id
+      this.editTitle = note.title
+      this.editContent = note.content
+      this.openEditDialogFlag = true
+      this.successMessage = ''
+      this.errorMessage = ''
+    },
+    async handleUpdateNote () {
+      try {
+        const noteData = { title: this.editTitle, content: this.editContent }
+        await apiClient.updateNoteById(this.selectedNoteId, noteData)
+        this.successMessage = 'Nota atualizada com sucesso!'
+        this.closeEditDialog()
+        this.fetchNotes()
+      } catch (error) {
+        console.error('Erro ao atualizar a nota', error)
+        this.errorMessage = 'Erro ao atualizar a nota, tente novamente.'
+      }
+    },
+    closeEditDialog () {
+      this.openEditDialogFlag = false
+      this.selectedNoteId = null
+      this.editTitle = ''
+      this.editContent = ''
+      this.successMessage = ''
+      this.errorMessage = ''
+    }
+  },
+  created () {
+    this.fetchNotes()
+  }
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+}
+.not-found {
+  text-align: center;
+  margin: 30px;
+  font-size: 2em;
+  color: #999;
+  font-weight: bold;
+}
+.title {
+  font-size: 1.8em;
+  color: white;
+  margin: 10px;
+}
+.content {
+  font-size: 1.5em;
+  color: black;
+  margin: 10px;
+}
+.my-card {
+  height: 250px;
+  margin: 20px;
+  font-family: 'DM Sans';
+}
+.custom-card {
+  width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+.dialog-header {
+  border-bottom: 1px solid #e0e0e0;
+}
+.input-title,
+.input-content {
+  margin-bottom: 16px;
+}
+</style>
