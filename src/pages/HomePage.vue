@@ -1,75 +1,77 @@
 <template>
   <div>
-    <HeaderComponent></HeaderComponent>
-  </div>
-  <div class="row q-gutter-md">
-    <div v-if="notes.length === 0" class="col-12 not-found">
-      <p>Você ainda não adicionou nenhuma nota.</p>
-    </div>
-    <div v-for="note in notes" :key="note.id" class="col-12 col-sm-6 col-md-4 col-lg-3">
-      <q-card
-        flat
-        bordered
-        class="my-card"
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
-      >
-        <q-card-section class="bg-primary">
-          <div class="row items-center no-wrap">
-            <div class="col">
-              <div class="text-h6 title">{{ note.title }}</div>
-            </div>
-            <q-separator dark />
-            <div class="col-auto">
-              <q-btn color="white" round flat icon="more_vert">
-                <q-menu cover auto-close>
-                  <q-list>
-                    <q-item clickable @click="handleDeleteNote(note.id)">
-                      <q-item-section>Deletar</q-item-section>
-                    </q-item>
-                    <q-item clickable @click="openEditDialog(note)">
-                      <q-item-section>Editar</q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
-              </q-btn>
-            </div>
-          </div>
-        </q-card-section>
+    <HeaderComponent @search="handleSearch" />
+    <div class="q-pa-md">
+      <div class="row q-gutter-md">
+        <div v-if="filteredNotes.length === 0" class="col-12 not-found">
+          <p>Você ainda não adicionou nenhuma nota.</p>
+        </div>
+        <div v-for="note in filteredNotes" :key="note.id" class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <q-card
+            flat
+            bordered
+            class="my-card"
+            :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+          >
+            <q-card-section class="bg-primary">
+              <div class="row items-center no-wrap">
+                <div class="col">
+                  <div class="text-h6 title">{{ note.title }}</div>
+                </div>
+                <q-separator dark />
+                <div class="col-auto">
+                  <q-btn color="white" round flat icon="more_vert">
+                    <q-menu cover auto-close>
+                      <q-list>
+                        <q-item clickable @click="handleDeleteNote(note.id)">
+                          <q-item-section>Deletar</q-item-section>
+                        </q-item>
+                        <q-item clickable @click="openEditDialog(note)">
+                          <q-item-section>Editar</q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn>
+                </div>
+              </div>
+            </q-card-section>
 
-        <q-card-section>
-          <p class="content">{{ note.content }}</p>
-        </q-card-section>
-      </q-card>
-    </div>
-    <div class="col-12">
-      <CreateNoteComponent @noteCreated="fetchNotes" />
-      <q-dialog v-model="openEditDialogFlag" class="dialog-margin" :max-width="600">
-        <q-card class="custom-card">
-          <q-card-section class="dialog-header bg-primary text-white">
-            <div class="text-h6">Editar Nota</div>
-          </q-card-section>
+            <q-card-section>
+              <p class="content">{{ note.content }}</p>
+            </q-card-section>
+          </q-card>
+        </div>
+        <div class="col-12">
+          <CreateNoteComponent @noteCreated="fetchNotes" />
+          <q-dialog v-model="openEditDialogFlag" class="dialog-margin" :max-width="600">
+            <q-card class="custom-card">
+              <q-card-section class="dialog-header bg-primary text-white">
+                <div class="text-h6">Editar Nota</div>
+              </q-card-section>
 
-          <q-card-section class="q-pa-md dialog-content">
-            <div class="column">
-              <q-input v-model="editTitle" label="Título" filled class="input-title" />
-              <q-input v-model="editContent" filled type="textarea" label="Conteúdo" class="input-content" />
-            </div>
-          </q-card-section>
+              <q-card-section class="q-pa-md dialog-content">
+                <div class="column">
+                  <q-input v-model="editTitle" label="Título" filled class="input-title" />
+                  <q-input v-model="editContent" filled type="textarea" label="Conteúdo" class="input-content" />
+                </div>
+              </q-card-section>
 
-          <q-banner v-if="successMessage" class="msg text-positive">
-            {{ successMessage }}
-          </q-banner>
+              <q-banner v-if="successMessage" class="msg text-positive">
+                {{ successMessage }}
+              </q-banner>
 
-          <q-banner v-if="errorMessage" class="msg text-negative">
-            {{ errorMessage }}
-          </q-banner>
+              <q-banner v-if="errorMessage" class="msg text-negative">
+                {{ errorMessage }}
+              </q-banner>
 
-          <q-card-actions>
-            <q-btn flat label="Fechar" @click="closeEditDialog" />
-            <q-btn color="primary" label="Salvar" @click="handleUpdateNote" />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
+              <q-card-actions>
+                <q-btn flat label="Fechar" @click="closeEditDialog" />
+                <q-btn color="primary" label="Salvar" @click="handleUpdateNote" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -88,6 +90,7 @@ export default {
   data () {
     return {
       notes: [],
+      searchQuery: '',
       openEditDialogFlag: false,
       selectedNoteId: null,
       editTitle: '',
@@ -96,20 +99,29 @@ export default {
       errorMessage: ''
     }
   },
+  computed: {
+    filteredNotes () {
+      return this.notes.filter(note =>
+        note.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      )
+    }
+  },
   methods: {
     async fetchNotes () {
       try {
         const user = JSON.parse(sessionStorage.getItem('user'))
         if (user) {
           const response = await apiClient.getAllNotes('/notes')
-          this.notes = response.data
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          this.notes = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         } else {
           this.notes = []
         }
       } catch (error) {
         console.error('Erro ao buscar notas', error)
       }
+    },
+    handleSearch (query) {
+      this.searchQuery = query
     },
     async handleDeleteNote (noteId) {
       try {
