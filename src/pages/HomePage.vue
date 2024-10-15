@@ -3,7 +3,7 @@
     <div v-if="notes.length === 0" class="col-12 not-found">
       <p>Você ainda não adicionou nenhuma nota.</p>
     </div>
-    <div v-for="note in notes" :key="note.id" class="col-3 col-sm-6 col-md-4 col-lg-3">
+    <div v-for="note in notes" :key="note.id" class="col-12 col-sm-6 col-md-4 col-lg-3">
       <q-card
         flat
         bordered
@@ -40,7 +40,7 @@
     </div>
     <div class="col-12">
       <CreateNoteComponent @noteCreated="fetchNotes" />
-      <q-dialog v-model="openEditDialogFlag" class="dialog-margin" :max-width="600"> <!-- Adicionando classe de margem -->
+      <q-dialog v-model="openEditDialogFlag" class="dialog-margin" :max-width="600">
         <q-card class="custom-card">
           <q-card-section class="dialog-header bg-primary text-white">
             <div class="text-h6">Editar Nota</div>
@@ -98,7 +98,6 @@ export default {
         if (user) {
           const response = await apiClient.getAllNotes('/notes')
           this.notes = response.data
-            .filter(note => Number(note.userId) === Number(user.user.id))
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         } else {
           this.notes = []
