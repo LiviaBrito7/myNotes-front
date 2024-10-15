@@ -85,9 +85,9 @@ export default {
         const user = response.data
         localStorage.setItem('user', JSON.stringify(user))
         sessionStorage.setItem('user', JSON.stringify(user))
-        this.$router.push('/home')
         localStorage.setItem('token', token)
         sessionStorage.setItem('token', token)
+        this.$router.push('/home')
         this.successMessage = 'Usuário logado com sucesso!'
       } catch (error) {
         this.errorMessage = 'Erro ao logar o usuário. Tente novamente.'
