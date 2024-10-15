@@ -1,4 +1,7 @@
 <template>
+  <div>
+    <HeaderComponent></HeaderComponent>
+  </div>
   <div class="row q-gutter-md">
     <div v-if="notes.length === 0" class="col-12 not-found">
       <p>Você ainda não adicionou nenhuma nota.</p>
@@ -74,11 +77,13 @@
 <script>
 import apiClient from 'src/services/api.js'
 import CreateNoteComponent from 'src/components/CreateNoteComponent.vue'
+import HeaderComponent from 'src/components/HeaderComponent.vue'
 
 export default {
   name: 'HomePage',
   components: {
-    CreateNoteComponent
+    CreateNoteComponent,
+    HeaderComponent
   },
   data () {
     return {
