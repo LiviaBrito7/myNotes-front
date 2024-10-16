@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
-    <q-layout view="lHh lpr lFf" container style="height: 50px" class="shadow-2 rounded-borders">
-      <q-header elevated class="bg-primary">
+    <q-layout view="lHh lpr lFf" container style="height: 85px" class="shadow-2 rounded-borders">
+      <q-header elevated>
         <q-toolbar>
           <q-btn flat round dense icon="menu" class="q-mr-sm" />
           <q-space></q-space>
@@ -12,13 +12,16 @@
           <q-input
             v-model="searchQuery"
             label="Buscar Nota pelo Título"
-            debounce="300"
-            outlined
             class="header-search"
             @keyup.enter="searchNotes"
             style="width: 500px;"
-          />
-          <q-btn icon="search" @click="searchNotes" class="q-mr-xs" flat round dense />
+            outlined
+            clearable
+          >
+            <template v-slot:append>
+              <q-icon name="search" class="bg-primary btn-search" />
+            </template>
+          </q-input>
           <q-btn flat round dense icon="logout" @click="handleLogout" />
         </q-toolbar>
       </q-header>
@@ -49,7 +52,30 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 .header-search {
-  margin: 0 16px;
+  margin: 15px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+.q-field__label--float{
+  border-radius: 10px;
+}
+.q-btn {
+  color: white;
+}
+.btn-search {
+  border-radius: 50px;
+  width: 40px;
+  height: 40px;
+  color: white;
+}
+.btn-search:hover {
+  background-color: rgb(8, 68, 172)
+}
+.q-header{
+  background-color: #999;
+  font-family: 'DM Sans';
 }
 </style>
