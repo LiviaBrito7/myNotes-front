@@ -99,10 +99,12 @@ export default {
   },
   methods: {
     validateFields () {
+      this.validationErrors = { name: [], email: [], password: [] }
+
       if (!this.account.name) {
         this.validationErrors.name.push('O campo nome é obrigatório.')
       } else if (this.account.name.length > 50) {
-        this.validationErrors.name.push('O campo nome não pode ter mais de 40 caracteres.')
+        this.validationErrors.name.push('O campo nome não pode ter mais de 50 caracteres.')
       }
 
       if (!this.account.email) {
@@ -141,12 +143,34 @@ export default {
       try {
         await apiClient.createUser(userData)
         this.successMessage = 'Usuário cadastrado com sucesso!'
-        this.$router.push('/login')
+        await this.handleAutoLogin()
       } catch (error) {
         this.errorMessage = 'Erro ao cadastrar o usuário. Tente novamente.'
         console.error('Erro ao cadastrar:', error)
       } finally {
         this.loading = false
+      }
+    },
+
+    async handleAutoLogin () {
+      const credentials = {
+        email: this.account.email,
+        password: this.account.password
+      }
+
+      try {
+        const response = await apiClient.loginUser(credentials)
+        const token = response.data.token
+        const user = response.data
+        localStorage.setItem('user', JSON.stringify(user))
+        sessionStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem('token', token)
+        sessionStorage.setItem('token', token)
+        this.$router.push('/home')
+        this.successMessage = 'Usuário logado com sucesso!'
+      } catch (error) {
+        this.errorMessage = 'Erro ao realizar o login automático. Tente novamente.'
+        console.error('Erro ao logar:', error)
       }
     }
   }
