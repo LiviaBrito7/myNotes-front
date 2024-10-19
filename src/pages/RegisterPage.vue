@@ -166,7 +166,7 @@ export default {
         sessionStorage.setItem('user', JSON.stringify(user))
         localStorage.setItem('token', token)
         sessionStorage.setItem('token', token)
-        this.$router.push('/home')
+        this.$router.push('/')
         this.successMessage = 'Usuário logado com sucesso!'
       } catch (error) {
         this.errorMessage = 'Erro ao realizar o login automático. Tente novamente.'

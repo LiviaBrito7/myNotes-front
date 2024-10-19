@@ -115,6 +115,7 @@ export default {
           this.notes = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         } else {
           this.notes = []
+          this.$router.push('/login')
         }
       } catch (error) {
         console.error('Erro ao buscar notas', error)
