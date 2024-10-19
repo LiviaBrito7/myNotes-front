@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home-background">
     <HeaderComponent @search="handleSearch" />
     <div class="q-pa-md">
       <div class="row q-gutter-md">
@@ -10,19 +10,18 @@
           <q-card
             flat
             bordered
-            class="my-card"
-            :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+            class="my-card custom-card-bg"
           >
-            <q-card-section class="bg-primary">
+            <q-card-section class="custom-card-section">
               <div class="row items-center no-wrap">
                 <div class="col">
                   <div class="text-h6 title">{{ note.title }}</div>
                 </div>
                 <q-separator dark />
                 <div class="col-auto">
-                  <q-btn color="white" round flat icon="more_vert">
+                  <q-btn class="options" round flat icon="more_vert">
                     <q-menu cover auto-close>
-                      <q-list>
+                      <q-list class="menu">
                         <q-item clickable @click="handleDeleteNote(note.id)">
                           <q-item-section>Deletar</q-item-section>
                         </q-item>
@@ -36,7 +35,7 @@
               </div>
             </q-card-section>
 
-            <q-card-section>
+            <q-card-section class="custom-card-section">
               <p class="content">{{ note.content }}</p>
             </q-card-section>
           </q-card>
@@ -173,17 +172,20 @@ export default {
   margin: 0;
   padding: 0;
 }
+.home-background {
+  background-color: #E5E5E5;
+}
 .not-found {
   text-align: center;
   margin: 30px;
   font-size: 2em;
-  color: #999;
   font-weight: bold;
 }
 .title {
   font-size: 1.8em;
-  color: white;
   margin: 10px;
+  color: black;
+  font-weight: bold;
 }
 .content {
   font-size: 1.5em;
@@ -191,13 +193,15 @@ export default {
   margin: 10px;
 }
 .my-card {
-  height: 250px;
-  margin: 20px;
+  height: 350px;
+  margin: 10px;
   font-family: 'DM Sans';
+  background-color: white !important;
+  border: 1.5px solid #ccc;
+  border-radius: 13px;
 }
 .custom-card {
   width: 500px;
-  border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin: 20px;
 }
@@ -207,5 +211,15 @@ export default {
 .input-title,
 .input-content {
   margin-bottom: 16px;
+}
+.options{
+  color: #007bff;
+}
+.menu{
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 </style>
