@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <div class="mynoteslogo">
-      <img class="logo" src="../images/logo.svg" alt="logo mynotes">
+      <img class="logo" src="../images/logoPreta.svg" alt="logo mynotes">
       <h2>MyNotes</h2>
     </div>
     <div class="login-page q-gutter-md">
@@ -182,6 +182,8 @@ h2 {
   margin-right: 7px;
   display: flex;
   justify-content: center;
+  opacity: 0.7;
+  margin-bottom: 5px;
 }
 
 .msg {
