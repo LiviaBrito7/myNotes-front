@@ -41,7 +41,7 @@
         </div>
         <div class="col-12">
           <CreateNoteComponent @noteCreated="fetchNotes" />
-          <q-dialog v-model="openEditDialogFlag" class="dialog-margin" :max-width="600">
+          <q-dialog v-model="openEditDialogFlag" class="dialog-margin">
             <q-card class="custom-card">
               <q-card-section class="dialog-header bg-primary text-white">
                 <div class="text-h6">Editar Nota</div>
@@ -63,7 +63,7 @@
               </q-banner>
 
               <q-card-actions>
-                <q-btn flat label="Fechar" @click="closeEditDialog" />
+                <q-btn label="Fechar" @click="closeEditDialog" />
                 <q-btn color="primary" label="Salvar" @click="handleUpdateNote" />
               </q-card-actions>
             </q-card>
@@ -207,6 +207,9 @@ export default {
 }
 .dialog-header {
   border-bottom: 1px solid #e0e0e0;
+}
+.dialog-margin{
+  margin: 20px;
 }
 .input-title,
 .input-content {
